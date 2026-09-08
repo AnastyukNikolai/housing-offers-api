@@ -5,9 +5,8 @@ docker compose build
 docker compose up -d
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
+docker compose restart queue
 
-Seed: supplier-a, supplier-b
-API: http://localhost:8000
 
 # Commands
 
@@ -30,6 +29,8 @@ docker compose exec queue php artisan queue:work --sleep=1 --tries=3 --timeout=9
 docker compose exec app php artisan test
 
 # API
+
+API: http://localhost:8000
 
 POST /api/imports
 202, async

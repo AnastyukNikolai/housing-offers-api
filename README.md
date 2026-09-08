@@ -9,7 +9,23 @@ docker compose exec app php artisan migrate --seed
 Seed: supplier-a, supplier-b
 API: http://localhost:8000
 
-# Tests
+# Commands
+
+## Migrations
+
+docker compose exec app php artisan migrate
+
+## Seeders
+
+docker compose exec app php artisan db:seed
+
+## Queue worker
+
+# already started by docker compose (service: queue)
+# manual run:
+docker compose exec queue php artisan queue:work --sleep=1 --tries=3 --timeout=90
+
+## Tests
 
 docker compose exec app php artisan test
 

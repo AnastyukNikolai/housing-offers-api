@@ -14,11 +14,13 @@ class PropertySearchService
 
         $ranked = DB::table('offers')
             ->join('properties', 'properties.id', '=', 'offers.property_id')
+            ->join('suppliers', 'suppliers.id', '=', 'offers.supplier_id')
             ->select([
                 'properties.code as property_code',
                 'properties.name as property_name',
                 'properties.city as property_city',
                 'offers.id as offer_id',
+                'suppliers.code as supplier_code',
                 'offers.external_id',
                 'offers.check_in',
                 'offers.check_out',

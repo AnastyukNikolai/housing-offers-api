@@ -57,7 +57,9 @@ class PropertySearchTest extends TestCase
             ->assertJsonCount(1, 'data')
             ->assertJsonPath('data.0.code', 'BCN-0001')
             ->assertJsonPath('data.0.best_offer.id', $cheap->id)
-            ->assertJsonPath('data.0.best_offer.price', 50000);
+            ->assertJsonPath('data.0.best_offer.supplier', 'supplier-a')
+            ->assertJsonPath('data.0.best_offer.price', 50000)
+            ->assertJsonPath('data.0.best_offer.expires_at', $cheap->expires_at->toIso8601String());
     }
 
     public function test_expired_and_unavailable_offers_are_excluded(): void
@@ -198,7 +200,8 @@ class PropertySearchTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonCount(1, 'data')
-            ->assertJsonPath('data.0.best_offer.price', 60000);
+            ->assertJsonPath('data.0.best_offer.price', 60000)
+            ->assertJsonPath('data.0.best_offer.supplier', 'supplier-a');
     }
 
     private function createOffer(Property $property, array $overrides = []): Offer

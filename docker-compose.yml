@@ -7,16 +7,12 @@ services:
       - "${APP_PORT:-8000}:8000"
     volumes:
       - .:/var/www/html
+    env_file:
+      - .env
     environment:
-      APP_ENV: local
-      APP_DEBUG: "true"
-      APP_URL: http://localhost:${APP_PORT:-8000}
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-housing_offers}
-      DB_USERNAME: ${DB_USERNAME:-housing}
-      DB_PASSWORD: ${DB_PASSWORD:-secret}
       QUEUE_CONNECTION: database
       CACHE_STORE: database
       SESSION_DRIVER: database
@@ -31,21 +27,20 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/var/www/html
+    env_file:
+      - .env
     environment:
-      APP_ENV: local
-      APP_DEBUG: "true"
       DB_CONNECTION: mysql
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE:-housing_offers}
-      DB_USERNAME: ${DB_USERNAME:-housing}
-      DB_PASSWORD: ${DB_PASSWORD:-secret}
       QUEUE_CONNECTION: database
       CACHE_STORE: database
       SESSION_DRIVER: database
     depends_on:
       mysql:
         condition: service_healthy
+      app:
+        condition: service_started
     command: php artisan queue:work --sleep=1 --tries=3 --timeout=90
 
   mysql:
